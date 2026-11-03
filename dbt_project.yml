@@ -15,6 +15,7 @@ target-path: "target"
 clean-targets:
  - "target"
  - "dbt_packages"
+
 # Set up models, which are basically SQL files, to create tables
 models:
  nyc_analytics:
