@@ -37,7 +37,7 @@ cleaned AS (
        CAST(signoff_date AS TIMESTAMP) AS signoff_date,
 
        -- Request details       
-       UPPER(TRIM(CAST(Filing Status AS STRING))) AS Filing Status,
+       UPPER(TRIM(CAST(Filing Status AS STRING))) AS Filing_Status,
        CAST(job_type AS STRING) AS job_type,
        CAST(job_description AS STRING) AS job_description,
        CAST(building_type AS STRING) AS building_type,
