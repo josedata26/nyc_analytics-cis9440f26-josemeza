@@ -62,31 +62,19 @@ cleaned AS (
            WHEN UPPER(TRIM(borough)) IN ('STATEN ISLAND', 'RICHMOND COUNTY') THEN 'Staten Island'
            ELSE 'UNKNOWN or CITYWIDE'
        END AS borough,
-
-       CAST(incident_address AS STRING) AS incident_address,
-       CAST(street_name AS STRING) AS street_name,
-       CAST(cross_street_1 AS STRING) AS cross_street_1,
-       CAST(cross_street_2 AS STRING) AS cross_street_2,
+       
        CAST(latitude AS DECIMAL) AS latitude,
        CAST(longitude AS DECIMAL) AS longitude,
-
-       -- Clearer column name as well for this one
-       CAST(open_data_channel_type AS STRING) AS method_of_submission,
-
-       -- Metadata
-       CURRENT_TIMESTAMP() AS _stg_loaded_at
-
+       
    FROM source
 
    -- Filters
-   WHERE (agency = 'DOT' OR agency_name LIKE '%Transportation%')
-   AND unique_key IS NOT NULL
-   AND created_date IS NOT NULL
-   AND CAST(created_date AS DATE) >= DATE_SUB(CURRENT_DATE(), INTERVAL 7 YEAR)
+   WHERE job_filing_number IS NOT NULL
+   AND filing_date IS NOT NULL   
    AND borough IS NOT NULL
 
    -- Deduplicate
-   QUALIFY ROW_NUMBER() OVER (PARTITION BY unique_key ORDER BY created_date DESC) = 1
+   QUALIFY ROW_NUMBER() OVER (PARTITION BY job_filing_number ORDER BY created_date DESC) = 1
 )
 
 SELECT * FROM cleaned
