@@ -38,10 +38,7 @@ cleaned AS (
        CAST(job_type AS STRING) AS job_type,
        CAST(job_description AS STRING) AS job_description,
        CAST(building_type AS STRING) AS building_type,
-       
-       -- Location - clean zip code, handling several common zip code data problems
-       -- all zip fields removed
-
+              
        -- Location - standardized borough, just in case
        CASE
            WHEN UPPER(TRIM(borough)) IN ('MANHATTAN', 'NEW YORK COUNTY') THEN 'Manhattan'
