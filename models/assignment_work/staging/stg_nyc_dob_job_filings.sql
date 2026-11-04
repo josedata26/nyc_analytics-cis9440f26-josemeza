@@ -18,8 +18,7 @@ cleaned AS (
            signoff_date,           
            job_type,
            job_description,
-           building_type,           
-           postcode,
+           building_type,                      
            borough,
            latitude,
            longitude          
@@ -41,16 +40,7 @@ cleaned AS (
        CAST(building_type AS STRING) AS building_type,
        
        -- Location - clean zip code, handling several common zip code data problems
-       CASE
-           WHEN UPPER(TRIM(CAST(postcode AS STRING))) IN ('N/A', 'NA') THEN NULL
-           WHEN UPPER(TRIM(CAST(postcode AS STRING))) = 'ANONYMOUS' THEN 'Anonymous'
-           WHEN LENGTH(CAST(postcode AS STRING)) = 5 THEN CAST(postcode AS STRING)
-           WHEN LENGTH(CAST(postcode AS STRING)) = 9 THEN CAST(postcode AS STRING)
-           WHEN LENGTH(CAST(postcode AS STRING)) = 10
-               AND REGEXP_CONTAINS(CAST(postcode AS STRING), r'^\d{5}-\d{4}')
-           THEN CAST(postcode AS STRING)
-           ELSE NULL
-       END AS zip,
+       -- all zip fields removed
 
        -- Location - standardized borough, just in case
        CASE
