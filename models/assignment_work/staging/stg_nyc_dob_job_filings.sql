@@ -15,8 +15,7 @@ cleaned AS (
            current_status_date, 
            first_permit_date, 
            approved_date,
-           signoff_date,
-           Filing Status,           
+           signoff_date,           
            job_type,
            job_description,
            building_type           
@@ -36,15 +35,14 @@ cleaned AS (
        CAST(approved_date AS TIMESTAMP) AS approved_date,
        CAST(signoff_date AS TIMESTAMP) AS signoff_date,
 
-       -- Request details       
-       UPPER(TRIM(CAST(Filing Status AS STRING))) AS Filing Status,
+       -- Request details              
        CAST(job_type AS STRING) AS job_type,
        CAST(job_description AS STRING) AS job_description,
        CAST(building_type AS STRING) AS building_type,
        
        -- Location - clean zip code, handling several common zip code data problems
        CASE
-           WHEN UPPER(TRIM(CAST(postcode AS STRING))) IN ('N/A', 'NA', 'null') THEN NULL
+           WHEN UPPER(TRIM(CAST(postcode AS STRING))) IN ('N/A', 'NA') THEN NULL
            WHEN LENGTH(CAST(postcode AS STRING)) = 5 THEN CAST(postcode AS STRING)
            WHEN LENGTH(CAST(postcode AS STRING)) = 9 THEN CAST(postcode AS STRING)
            WHEN LENGTH(CAST(postcode AS STRING)) = 10
