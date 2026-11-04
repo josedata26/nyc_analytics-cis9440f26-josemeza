@@ -43,6 +43,7 @@ cleaned AS (
        -- Location - clean zip code, handling several common zip code data problems
        CASE
            WHEN UPPER(TRIM(CAST(postcode AS STRING))) IN ('N/A', 'NA') THEN NULL
+           WHEN UPPER(TRIM(CAST(postcode AS STRING))) = 'ANONYMOUS' THEN 'Anonymous'
            WHEN LENGTH(CAST(postcode AS STRING)) = 5 THEN CAST(postcode AS STRING)
            WHEN LENGTH(CAST(postcode AS STRING)) = 9 THEN CAST(postcode AS STRING)
            WHEN LENGTH(CAST(postcode AS STRING)) = 10
@@ -67,7 +68,7 @@ cleaned AS (
    FROM source
 
    -- Filters
-   WHERE job_filing_number IS NOT NULL
+   WHERE (job_filing_number IS NOT NULL)
    AND filing_date IS NOT NULL   
    AND borough IS NOT NULL
 
@@ -76,5 +77,5 @@ cleaned AS (
 )
 
 SELECT * FROM cleaned
--- All should be part of this table after running: stg_nyc_311_dot
+-- All should be part of this table after running: stg_nyc_dob_job_filings
 
