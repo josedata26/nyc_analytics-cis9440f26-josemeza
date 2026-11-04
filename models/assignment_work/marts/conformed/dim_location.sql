@@ -2,26 +2,26 @@
 -- Grain: one row per distinct combination of borough / council_district / zip.
 
 WITH stg_311 AS (
-    SELECT * FROM {{ ref('YOUR-STAGING-DOT-311-SRs-MODEL-NAME-HERE') }}
+    SELECT * FROM {{ ref('stg_nyc_311_dot') }}
 ),
 
 stg_dob AS (
-    SELECT * FROM {{ ref('YOUR-STAGING-DOB-JOB-FILINGS-MODEL-NAME-HERE') }}
+    SELECT * FROM {{ ref('stg_nyc_dob_job_filings') }}
 ),
 
 all_locations AS (
 
     SELECT DISTINCT
-        ?????????
+        borough
     FROM stg_311
     WHERE borough IS NOT NULL
        OR council_district IS NOT NULL
-       OR zip IS NOT NULL
+       OR incident_zip IS NOT NULL
 
     UNION DISTINCT
 
     SELECT DISTINCT
-        ??????????
+        borough
     FROM stg_dob
     WHERE borough IS NOT NULL
        OR council_district IS NOT NULL
@@ -56,6 +56,6 @@ null_placeholder AS (
 
 )
 
-SELECT ????? FROM location_dimension
+SELECT * FROM location_dimension
 UNION ALL
-SELECT ????? FROM null_placeholder
+SELECT * FROM null_placeholder

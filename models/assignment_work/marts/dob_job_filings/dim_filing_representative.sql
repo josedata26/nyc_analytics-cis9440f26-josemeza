@@ -2,7 +2,7 @@
 -- Grain: one row per distinct combo of filing representative attributes
 
 WITH stg_dob AS (
-    SELECT * FROM {{ ref('YOUR-STAGING-DOB-JOB-FILINGS-MODEL-NAME-HERE') }}
+    SELECT * FROM {{ ref('stg_nyc_dob_job_filings') }}
 ),
 
 distinct_filing_reps AS (
@@ -16,7 +16,7 @@ distinct_filing_reps AS (
         filing_representative_city          AS city,
         filing_representative_state         AS state,
         filing_representative_zip           AS zip
-    FROM ??????
+    FROM stg_dob
     WHERE filing_representative_first_name    IS NOT NULL
        OR filing_representative_last_name     IS NOT NULL
        OR filing_representative_business_name IS NOT NULL
@@ -44,7 +44,7 @@ dim_filing_rep AS (
         state,
         zip
 
-    FROM ??????
+    FROM distinct_filing_reps
 
 ),
 
@@ -52,11 +52,22 @@ dim_filing_rep AS (
 -- Some DOB job filings don't have one per initial data review
 null_placeholder AS (
 
-    ?????? -- Insert code here for null placeholder row
+    SELECT
+        '-1'                          AS filing_representative_key,
+        CAST(NULL AS STRING)          AS first_name,
+        CAST(NULL AS STRING)          AS middle_initial,
+        CAST(NULL AS STRING)          AS last_name,
+        CAST(NULL AS STRING)          AS business_name,
+        CAST(NULL AS STRING)          AS street_name,
+        CAST(NULL AS STRING)          AS city,
+        CAST(NULL AS STRING)          AS state,
+        CAST(NULL AS STRING)          AS zip
+        
+    -- Insert code here for null placeholder row
 
 )
 
 SELECT * FROM dim_filing_rep
 
 UNION ALL
-??????
+SELECT * FROM null_placeholder
