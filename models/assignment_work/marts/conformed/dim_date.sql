@@ -13,46 +13,47 @@ stg_dob AS (
 all_dates AS (
 
     -- 311 service requests: date roles referenced by fact_311_service_request
-    SELECT DISTINCT CAST(created_date AS TIMESTAMP) AS full_date
+    SELECT DATE(created_date) AS full_date
     FROM stg_311
     WHERE created_date IS NOT NULL
 
     UNION DISTINCT
 
-    SELECT DISTINCT CAST(closed_date AS TIMESTAMP) AS full_date
+    SELECT DATE(closed_date)
     FROM stg_311
     WHERE closed_date IS NOT NULL
 
     UNION DISTINCT
 
     -- DOB NOW job filings: date roles referenced by fact_dob_job_filing
-    SELECT DISTINCT CAST(filing_date AS TIMESTAMP) AS full_date
+    SELECT DATE(filing_date)
     FROM stg_dob
     WHERE filing_date IS NOT NULL
 
     UNION DISTINCT
 
-    SELECT DISTINCT CAST(current_status_date AS TIMESTAMP) AS full_date
+    SELECT DATE(current_status_date)
     FROM stg_dob
     WHERE current_status_date IS NOT NULL
 
     UNION DISTINCT
 
-    SELECT DISTINCT CAST(first_permit_date AS TIMESTAMP) AS full_date
+    SELECT DATE(first_permit_date)
     FROM stg_dob
     WHERE first_permit_date IS NOT NULL
 
     UNION DISTINCT
 
-    SELECT DISTINCT CAST(approved_date AS TIMESTAMP) AS full_date
+    SELECT DATE(approved_date)
     FROM stg_dob
     WHERE approved_date IS NOT NULL
 
     UNION DISTINCT
 
-    SELECT DISTINCT CAST(signoff_date AS TIMESTAMP) AS full_date
+    SELECT DATE(signoff_date)
     FROM stg_dob
     WHERE signoff_date IS NOT NULL
+
 
 ),
 
