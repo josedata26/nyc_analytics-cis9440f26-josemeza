@@ -18,11 +18,11 @@ cleaned AS (
            signoff_date,           
            job_type,
            job_description,
-           building_type           
+           building_type,           
            postcode,
            borough,
            latitude,
-           longitude,          
+           longitude          
        ),
 
        -- Identifiers
