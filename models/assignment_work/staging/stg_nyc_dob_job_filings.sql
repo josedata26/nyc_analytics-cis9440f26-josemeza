@@ -16,7 +16,7 @@ cleaned AS (
            first_permit_date, 
            approved_date,
            signoff_date,
-           Filing Status           
+           Filing Status,           
            job_type,
            job_description,
            building_type           
