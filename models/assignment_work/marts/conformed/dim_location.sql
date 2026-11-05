@@ -9,14 +9,16 @@ stg_dob AS (
     SELECT * FROM {{ ref('stg_nyc_dob_job_filings') }}
 ),
 
+all_locations AS (
+
     SELECT
     CAST(borough AS STRING) AS borough,
     CAST(council_district AS STRING) AS council_district,
     CAST(zip AS STRING) AS zip
     FROM stg_311
     WHERE borough IS NOT NULL
-    OR council_district IS NOT NULL
-    OR zip IS NOT NULL
+       OR council_district IS NOT NULL
+       OR zip IS NOT NULL
 
     UNION DISTINCT
 
@@ -26,8 +28,8 @@ stg_dob AS (
     CAST(zip AS STRING)
     FROM stg_dob
     WHERE borough IS NOT NULL
-    OR council_district IS NOT NULL
-    OR zip IS NOT NULL
+       OR council_district IS NOT NULL
+       OR zip IS NOT NULL
 
 ),
 
