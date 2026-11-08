@@ -12,4 +12,10 @@ sources:
           filtered for 2020-2025 period. Each restaurant is uniquely identified by a CAMIS number, and the data includes grades, 
           violation codes/descriptions, critical flags, and inspection dates. 
           The grain is an inspection outcome (violation citation), associated with one inspection of a specific restaurant.
-          
+      - name: nyc_restaurant_inspection_secondary_311
+        description: |
+          From "Group 3 Project Milestone 3 - Notes" = Secondary dataset: The 311 Service Request dataset subset, 
+          filtered to DOHMH (Department of Health and Mental Hygiene) complaints for 2020-2025 period. 
+          It contains information about the service request, including complaint type, responding agency - DOHMH, 
+          and geographic location. 
+          The grain is one 311 service request (complaint) responded by DOHMH for a Restaurant and Restaurant/Bar/Deli/Bakery location types.    
