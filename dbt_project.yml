@@ -33,7 +33,7 @@ models:
        conformed:
          +materialized: table
 
-       dob_job_filings:
+       dob_job_filings: -- HAVE TO CHNAGE THIS TO RESTAURANT INSPECTION TABLE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          +materialized: table
 
        dot_311:
