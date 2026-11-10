@@ -24,17 +24,17 @@ models:
    assignment_work:
      staging:
        +materialized: table
-       +schema: nyc_homework_staging
+       +schema: nyc_restaurant_data_analysis_staging
 
      marts:
        +materialized: table
-       +schema: nyc_homework_warehouse_marts
+       +schema: nyc_restaurant_data_analysis_warehouse_marts
       
        conformed:
          +materialized: table
 
-       dob_job_filings: -- HAVE TO CHNAGE THIS TO RESTAURANT INSPECTION TABLE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         +materialized: table
+       nyc_restaurant_inspection_primary:
+         +materialized: table 
 
-       dot_311:
+       nyc_restaurant_inspection_secondary_311:
          +materialized: table
