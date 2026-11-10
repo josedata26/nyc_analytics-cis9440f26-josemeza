@@ -1,4 +1,4 @@
--- Clean and standardize 311 DOT service request data
+-- Clean and standardize nyc_restaurant_inspection_primary service request data
 -- One row per service request
 
 WITH source AS (
