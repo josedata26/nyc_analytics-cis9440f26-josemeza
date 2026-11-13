@@ -30,18 +30,18 @@ cleaned AS (
        ),
 
        -- Identifiers
-       CAST(unique_key AS STRING) AS request_id,
+       CAST(unique_key AS STRING) AS unique_key, -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
 
        -- Date/Time
-       CAST(created_date AS TIMESTAMP) AS created_date,
-       CAST(closed_date AS TIMESTAMP) AS closed_date,
+       CAST(created_date AS TIMESTAMP) AS created_date, -- this field is already a TIMESTAMP in the source data, so dont know the true value of CASTing it
+       CAST(closed_date AS TIMESTAMP) AS closed_date, -- this field as well is already a TIMESTAMP in the source data, so dont know the true value of CASTing it
 
        -- Request details
-       CAST(agency AS STRING) AS agency,
-       CAST(agency_name AS STRING) AS agency_name,
-       CAST(complaint_type AS STRING) AS complaint_type,
-       CAST(descriptor AS STRING) AS descriptor,
-       UPPER(TRIM(CAST(status AS STRING))) AS status,
+       CAST(agency AS STRING) AS agency, -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
+       CAST(agency_name AS STRING) AS agency_name, -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
+       CAST(complaint_type AS STRING) AS complaint_type, -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
+       CAST(descriptor AS STRING) AS descriptor, -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
+       UPPER(TRIM(CAST(status AS STRING))) AS status,  -- this field is already a STRING in the source data, so dont know the true value of CASTing it 
 
        -- Location - clean zip code, handling several common zip code data problems
        CASE
