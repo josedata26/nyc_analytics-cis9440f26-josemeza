@@ -1,6 +1,6 @@
 -- Purpose: to clean and standardize nyc_restaurant_inspection_secondary_311
 -- Grain: one row per 311 service request (complaint), identified by unique_key.
--- Scope: requests assigned to agency DOHMH with location_type Restaurant or Restaurant/Bar/Deli/Bakery.
+-- Scope: requests assigned to agency DOHMH with location_type Restaurant or Restaurant/Bar/Deli/Bakery (filtered at extraction).
 
 WITH source AS (
    SELECT * FROM {{ source('raw', 'nyc_restaurant_inspection_secondary_311') }}
