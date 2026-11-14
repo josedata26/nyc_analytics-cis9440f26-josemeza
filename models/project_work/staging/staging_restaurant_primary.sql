@@ -1,5 +1,6 @@
--- Clean and standardize nyc_restaurant_inspection_primary service request data
--- One row per service request
+-- Purpose: to clean and standardize nyc_restaurant_inspection_primary data
+-- Grain: one row per violation cited during one DOHMH restaurant inspection, identified by camis + inspection_date + inspection_type + violation_code.
+-- Scope: inspections dated 2020-01-01 through 2025-12-31 (filtered at extraction). Inspections with no violations are kept as one row with violation_code NULL.
 
 WITH source AS (
    SELECT * FROM {{ source('raw', 'nyc_restaurant_inspection_primary') }}
