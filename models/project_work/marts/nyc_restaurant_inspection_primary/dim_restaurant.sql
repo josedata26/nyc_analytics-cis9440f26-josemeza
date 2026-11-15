@@ -6,7 +6,7 @@ WITH stg_restaurant AS (
 ),
 
 distinct_restaurant AS (
-    SELECT
+    SELECT DISTINCT
         camis AS camis_id,
         dba AS dba_name,
         building,
@@ -25,6 +25,6 @@ dim_restaurant AS (
         street,
         bin
     FROM distinct_restaurant
-),
+)
 
 SELECT * FROM dim_restaurant
