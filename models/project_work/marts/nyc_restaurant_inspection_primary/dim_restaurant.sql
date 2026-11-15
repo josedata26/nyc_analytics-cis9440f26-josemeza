@@ -1,5 +1,6 @@
 -- Restaurant dimension for restaurant inspections.
 -- Grain: one row per restaurant (camis_id).
+-- We added a qualifier that will keep just the latest version of each restaurant, as the camis doesnt change, but the name or address can.
 
 WITH stg_restaurant AS (
     SELECT * FROM {{ ref('staging_restaurant_primary') }}
