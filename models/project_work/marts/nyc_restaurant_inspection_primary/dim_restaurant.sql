@@ -13,7 +13,8 @@ distinct_restaurant AS (
         street,                           
         bin                                      
     FROM stg_restaurant
-    WHERE camis IS NOT NULL    
+    WHERE camis IS NOT NULL   
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY camis ORDER BY inspection_date DESC) = 1 
 ),
 
 dim_restaurant AS (
