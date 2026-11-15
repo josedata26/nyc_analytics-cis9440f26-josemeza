@@ -1,10 +1,5 @@
 -- Violation type dimension for NYC DOHMH restaurant inspections.
--- Grain: one row per violation_code, plus two special rows:
---   '-1' = unknown violation (a code that could not be matched)
---   '-2' = no violation (inspections where nothing was cited; violation_code is NULL in staging)
--- Columns: violation_type_key, violation_code, violation_description, critical_flag.
--- violation_description was moved here from fact_rstrnt_inspection, because it describes the
--- violation code, not the individual inspection (update the ERD accordingly).
+-- Grain: one row per violation type (violation_code)
 
 WITH stg_restaurant AS (
     SELECT * FROM {{ ref('staging_restaurant_primary') }}
@@ -17,7 +12,7 @@ distinct_violation_type AS (
         critical_flag
     FROM stg_restaurant
     WHERE violation_code IS NOT NULL
-    -- QUALIFY ROW_NUMBER() OVER (PARTITION BY violation_code ORDER BY inspection_date DESC, record_date DESC) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY violation_code ORDER BY inspection_date DESC, record_date DESC) = 1    
 ),
 
 dim_violation_type AS (

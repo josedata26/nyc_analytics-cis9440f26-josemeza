@@ -35,7 +35,8 @@ unknown_member AS (
         '-1'                 AS restaurant_key,
         CAST(NULL AS STRING) AS camis_id,
         'UNKNOWN'            AS dba_name,
-        CAST(NULL AS STRING) AS restaurant_address,
+        CAST(NULL AS STRING) AS building,
+        CAST(NULL AS STRING) AS street,
         CAST(NULL AS STRING) AS bin
 )
 SELECT * FROM dim_restaurant
