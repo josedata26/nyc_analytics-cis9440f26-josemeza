@@ -1,31 +1,19 @@
--- Restaurant dimension for NYC DOHMH restaurant inspections.
--- Grain: one row per restaurant (camis_id), plus one '-1' row for an unknown restaurant.
--- Columns follow the ERD: restaurant_key, camis_id, dba_name, restaurant_address, bin.
---
--- The raw data has many rows per restaurant (one per violation per inspection), and a restaurant's
--- name or address can change over time. This dimension keeps the MOST RECENT version
--- of each restaurant's attributes (from its latest inspection).
+-- Restaurant dimension for restaurant inspections.
+-- Grain: one row per restaurant (camis_id).
 
 WITH stg_restaurant AS (
     SELECT * FROM {{ ref('staging_restaurant_primary') }}
 ),
 
-latest_per_restaurant AS (
+distinct_restaurant AS (
     SELECT
-        camis                AS camis_id,            -- business ID from NYC Open Data (CAMIS)
-        dba                  AS dba_name,            -- "doing business as" name             
+        camis AS camis_id,
+        dba AS dba_name,
         building,
         street,                           
-        bin                                           -- building ID (NULL when the source only had a placeholder)
-        -- cuisine_description is NOT here: per the ERD it lives in fact_rstrnt_inspection
+        bin                                      
     FROM stg_restaurant
-    WHERE camis IS NOT NULL
-
-    -- Keep one row per restaurant: the most recent inspection, then the most recently refreshed record
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY camis
-        ORDER BY inspection_date DESC, record_date DESC
-    ) = 1
+    WHERE camis IS NOT NULL    
 ),
 
 dim_restaurant AS (
@@ -36,20 +24,7 @@ dim_restaurant AS (
         building,
         street,
         bin
-    FROM latest_per_restaurant
+    FROM distinct_restaurant
 ),
 
-unknown_member AS (
-    -- Used by the fact table when an inspection cannot be matched to a restaurant
-    SELECT
-        '-1'                 AS restaurant_key,
-        CAST(NULL AS STRING) AS camis_id,
-        'UNKNOWN'            AS dba_name,
-        CAST(NULL AS STRING) AS building,
-        CAST(NULL AS STRING) AS street,
-        CAST(NULL AS STRING) AS bin
-)
-
 SELECT * FROM dim_restaurant
-UNION ALL
-SELECT * FROM unknown_member
