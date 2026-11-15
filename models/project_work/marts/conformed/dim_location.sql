@@ -12,26 +12,26 @@ stg_restaurant AS (
 all_locations AS (
     SELECT DISTINCT
         borough,
-        zip
+        zipcode
     FROM stg_311
     WHERE borough IS NOT NULL
-       OR zip IS NOT NULL
+       OR zipcode IS NOT NULL
     UNION DISTINCT
     SELECT DISTINCT
         borough,
-        zip
+        zipcode
     FROM stg_restaurant
     WHERE borough IS NOT NULL
-       OR zip IS NOT NULL
+       OR zipcode IS NOT NULL
 ),
 
 location_dimension AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key([
-            'borough', 'zip'
+            'borough', 'zipcode'
         ]) }} AS location_key,
         borough,
-        zip
+        zipcode
     FROM all_locations
 ),
 
@@ -39,7 +39,7 @@ null_placeholder AS (
     SELECT
         '-1' AS location_key,
         CAST(NULL AS STRING) AS borough,
-        CAST(NULL AS STRING) AS zip
+        CAST(NULL AS STRING) AS zipcode
 )
 
 SELECT * FROM location_dimension
