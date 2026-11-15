@@ -27,6 +27,17 @@ dim_restaurant AS (
         street,
         bin
     FROM distinct_restaurant
-)
+),
 
+unknown_member AS (
+    -- Used by the fact table when an inspection cannot be matched to a restaurant
+    SELECT
+        '-1'                 AS restaurant_key,
+        CAST(NULL AS STRING) AS camis_id,
+        'UNKNOWN'            AS dba_name,
+        CAST(NULL AS STRING) AS restaurant_address,
+        CAST(NULL AS STRING) AS bin
+)
 SELECT * FROM dim_restaurant
+UNION ALL
+SELECT * FROM unknown_member

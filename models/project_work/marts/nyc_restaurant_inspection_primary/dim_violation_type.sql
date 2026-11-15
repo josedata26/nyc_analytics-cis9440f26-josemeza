@@ -10,21 +10,14 @@ WITH stg_restaurant AS (
     SELECT * FROM {{ ref('staging_restaurant_primary') }}
 ),
 
-latest_per_code AS (
-    SELECT
+distinct_violation_type AS (
+    SELECT DISTINCT
         violation_code,
         violation_description,
         critical_flag
     FROM stg_restaurant
     WHERE violation_code IS NOT NULL
-
-    -- One row per code. DOHMH has revised violation wording over the years, so the same code
-    -- can appear with slightly different descriptions (or flags). Keep the version from the
-    -- most recent inspection. Run the check query at the bottom to see how often this happens.
-    QUALIFY ROW_NUMBER() OVER (
-        PARTITION BY violation_code
-        ORDER BY inspection_date DESC, record_date DESC
-    ) = 1
+    -- QUALIFY ROW_NUMBER() OVER (PARTITION BY violation_code ORDER BY inspection_date DESC, record_date DESC) = 1
 ),
 
 dim_violation_type AS (
@@ -33,7 +26,7 @@ dim_violation_type AS (
         violation_code,
         violation_description,
         critical_flag
-    FROM latest_per_code
+    FROM distinct_violation_type
 ),
 
 special_members AS (
@@ -57,24 +50,3 @@ special_members AS (
 SELECT * FROM dim_violation_type
 UNION ALL
 SELECT * FROM special_members
-
--- In fact_rstrnt_inspection:
---   1) REMOVE s.violation_description (it now lives in this dimension)
---   2) build the key like this:
---        CASE
---            WHEN s.violation_code IS NULL THEN '-2'               -- inspection with no violations
---            ELSE COALESCE(v.violation_type_key, '-1')             -- unmatched code -> unknown
---        END AS violation_type_key
---        ...
---        LEFT JOIN dim_violation_type v   (use ref('dim_violation_type') with double curly braces in the fact model)
---            ON s.violation_code = v.violation_code
-
--- Checks to run in BigQuery (results are useful for the documentation):
---   Codes with more than one description or critical flag in 2020-2025:
---   SELECT violation_code,
---          COUNT(DISTINCT violation_description) AS n_descriptions,
---          COUNT(DISTINCT critical_flag)         AS n_flags
---   FROM `yuliastarovoytova01.nyc_restaurant_data_analysis_staging.staging_restaurant_primary`
---   GROUP BY violation_code
---   HAVING n_descriptions > 1 OR n_flags > 1
---   ORDER BY n_descriptions DESC;
