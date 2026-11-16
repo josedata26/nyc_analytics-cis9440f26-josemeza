@@ -22,7 +22,7 @@ dim_restaurant AS (
         {{ dbt_utils.generate_surrogate_key(['camis_id']) }} AS restaurant_key,
         camis_id,
         dba_name,
-        restaurant_address
+        restaurant_address,
         bin
     FROM distinct_restaurant
 ),
