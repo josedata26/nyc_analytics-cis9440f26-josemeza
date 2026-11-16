@@ -10,8 +10,7 @@ distinct_restaurant AS (
     SELECT DISTINCT
         camis AS camis_id,
         dba AS dba_name,
-        building,
-        street,                           
+        NULLIF(ARRAY_TO_STRING([TRIM(building), TRIM(street)], ' '), '') AS restaurant_address, -- to join the fields of building and street.
         bin                                      
     FROM stg_restaurant
     WHERE camis IS NOT NULL   
@@ -23,8 +22,7 @@ dim_restaurant AS (
         {{ dbt_utils.generate_surrogate_key(['camis_id']) }} AS restaurant_key,
         camis_id,
         dba_name,
-        building,
-        street,
+        restaurant_address
         bin
     FROM distinct_restaurant
 ),
@@ -35,8 +33,7 @@ unknown_member AS (
         '-1'                 AS restaurant_key,
         CAST(NULL AS STRING) AS camis_id,
         'UNKNOWN'            AS dba_name,
-        CAST(NULL AS STRING) AS building,
-        CAST(NULL AS STRING) AS street,
+        CAST(NULL AS STRING) AS restaurant_address,        
         CAST(NULL AS STRING) AS bin
 )
 SELECT * FROM dim_restaurant
