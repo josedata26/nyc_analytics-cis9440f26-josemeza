@@ -44,7 +44,7 @@ enriched AS (
             WHEN LOWER(descriptor) LIKE '%Other%' THEN 'other'
 
             ELSE 'other'
-        END AS complaint_detail
+        END AS complaint_category
 
     FROM distinct_complaint_types
 
@@ -57,9 +57,9 @@ dim_complaint_type AS (
             'complaint_type', 'descriptor'
         ]) }} AS complaint_type_key,
 
-        complaint_type,
+        complaint_type AS complaint,
         descriptor,
-        complaint_detail
+        complaint_category
 
     FROM enriched
 
