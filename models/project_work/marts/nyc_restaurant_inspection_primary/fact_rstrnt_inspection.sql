@@ -29,7 +29,7 @@ fact AS (
     SELECT
         -- Primary key: one per violation row
         -- Inspection identifier: shared by all violation rows of one inspection
-        {{ dbt_utils.generate_surrogate_key(['s.camis', 's.inspection_date', 's.inspection_type']) }} AS inspection_key,
+        {{ dbt_utils.generate_surrogate_key(['s.camis', 's.inspection_date', 's.violation_code']) }} AS inspection_key,
 
                 -- Foreign keys (from the dimensions, with unknown fallbacks)
         COALESCE(insp_d.date_key, '-1')     AS inspection_date_key,
