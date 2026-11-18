@@ -28,7 +28,6 @@ fact AS (
     
     SELECT
         -- Primary key: one per violation row
-        {{ dbt_utils.generate_surrogate_key(['s.camis', 's.inspection_date', 's.inspection_type', 's.violation_code']) }} AS inspection_violation_key,
         -- Inspection identifier: shared by all violation rows of one inspection
         {{ dbt_utils.generate_surrogate_key(['s.camis', 's.inspection_date', 's.inspection_type']) }} AS inspection_key,
 
