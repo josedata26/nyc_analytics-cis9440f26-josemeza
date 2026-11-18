@@ -8,7 +8,6 @@ WITH stg_restaurant AS (
 distinct_violation_type AS (
     SELECT DISTINCT
         violation_code,
-        violation_description,
         critical_flag
     FROM stg_restaurant
     WHERE violation_code IS NOT NULL
@@ -19,7 +18,6 @@ dim_violation_type AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['violation_code']) }} AS violation_type_key,
         violation_code,
-        violation_description,
         critical_flag
     FROM distinct_violation_type
 ),
@@ -29,7 +27,6 @@ special_members AS (
     SELECT
         '-1'                         AS violation_type_key,
         'UNKNOWN'                    AS violation_code,
-        'Unknown violation'          AS violation_description,
         'Unknown'                    AS critical_flag
 
     UNION ALL
@@ -38,7 +35,6 @@ special_members AS (
     SELECT
         '-2'                         AS violation_type_key,
         'NONE'                       AS violation_code,
-        'No violations were cited'   AS violation_description,
         'Not Applicable'             AS critical_flag
 )
 

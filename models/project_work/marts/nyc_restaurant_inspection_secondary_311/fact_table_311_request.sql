@@ -1,4 +1,4 @@
--- Fact table: DOT 311 service requests
+-- Fact table: 311 service requests
 -- Grain: one row per service request (request_id, controlled in staging model)
 
 WITH stg_311 AS (
@@ -37,7 +37,7 @@ fact AS (
         created_d.date_key AS created_date_key,
         -- closed_date_key
         -- Open requests have no closed date -> unknown memeber
-        CASE WHEN s.closed_date IS NULL THEN '-1' ELSE closed_d.date_key END AS close_date_key, 
+        CASE WHEN s.closed_date IS NULL THEN '-1' ELSE closed_d.date_key END AS closed_date_key, 
         -- location_key (Always will have a location key)
         l.location_key,
         -- complaint_type_key
@@ -79,9 +79,9 @@ fact AS (
         
 
     LEFT JOIN dim_complaint_type ct
-        ON s.complaint_type IS NOT DISTINCT FROM ct.complaint_type
+        ON s.complaint_type IS NOT DISTINCT FROM ct.complaint
         AND s.descriptor    IS NOT DISTINCT FROM ct.descriptor
-
+                
 )
 
 SELECT * FROM fact
