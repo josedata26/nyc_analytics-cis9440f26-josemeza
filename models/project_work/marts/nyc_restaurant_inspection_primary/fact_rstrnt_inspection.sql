@@ -1,5 +1,5 @@
 -- Fact table: NYC DOHMH restaurant inspections, 2020-2025
--- Grain: one row per violation cited during one restaurant inspection
+-- Grain: one row per restaurant inspection
 
 WITH stg_restaurant AS (
     SELECT * FROM {{ ref('staging_restaurant_primary') }}
