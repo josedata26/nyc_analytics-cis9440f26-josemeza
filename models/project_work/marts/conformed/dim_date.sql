@@ -63,8 +63,7 @@ null_placeholder AS (
         CAST(NULL AS INT64) AS day_of_month,
         CAST(NULL AS INT64) AS day_of_week,
         CAST(NULL AS STRING) AS day_of_week_name,
-        CAST(NULL AS BOOLEAN) AS is_weekend,
-        CAST(NULL AS INT64) AS fiscal_year 
+        CAST(NULL AS BOOLEAN) AS is_weekend 
 )
 
 SELECT * FROM date_dimension
